@@ -156,7 +156,17 @@ open class Highlighter {
 
 
     /**
-     Set the Highligt.js theme to use for highlighting.
+     Set custom CSS rules to use for highlighting.
+
+     - Parameters:
+        - themeCSS: The CSS rules for styling various syntax elements.
+    */
+    open func setThemeCSS(_ themeCSS: String) {
+        self.theme = Theme(withTheme: themeCSS)
+    }
+
+    /**
+     Set the Highlight.js theme to use for highlighting.
     
      - Parameters:
         - themeName: The Highlight.js theme's name.
