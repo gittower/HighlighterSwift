@@ -160,9 +160,23 @@ open class Highlighter {
 
      - Parameters:
         - themeCSS: The CSS rules for styling various syntax elements.
+         - withFont:  The name of the font to use. Default: Courier.
+         - ofSize:    The size of the font. Default: 14pt.
     */
-    open func setThemeCSS(_ themeCSS: String) {
-        self.theme = Theme(withTheme: themeCSS)
+    open func setThemeCSS(_ themeCSS: String, withFont: String? = nil, ofSize: CGFloat? = nil) {
+        // Create the required font
+        // If this fails ('font' == nil), we use the defaults
+        var font: HRFont? = nil
+        if let fontName: String = withFont {
+            var size: CGFloat = 14.0
+            if ofSize != nil {
+                size = ofSize!
+            }
+
+            font = HRFont.init(name: fontName, size: size)
+        }
+
+        self.theme = Theme(withTheme: themeCSS, usingFont: font)
     }
 
     /**
