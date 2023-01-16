@@ -35,6 +35,7 @@ open class Highlighter {
 
     
     // MARK:- Private Properties
+    private let context: JSContext
     private let hljs: JSValue
     private let bundle: Bundle
     private let htmlStart: String = "<"
@@ -76,6 +77,7 @@ open class Highlighter {
         }
         
         // Store the results for later
+        self.context = context
         self.hljs = hljs
         self.bundle = bundle
         
