@@ -186,7 +186,7 @@ open class Highlighter {
             font = HRFont.init(name: fontName, size: size)
         }
 
-        self.theme = Theme(withTheme: themeCSS, usingFont: font)
+        self.theme = Theme(withTheme: themeCSS, usingFont: font, debugCSS: debugCSS)
     }
 
     /**

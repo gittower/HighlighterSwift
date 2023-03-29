@@ -56,7 +56,9 @@ open class Theme {
         - withTheme: The theme's CSS description.
         - usingFont: Optionally, a UIFont or NSFont to apply to the theme. Default: Courier @ 14pt.
     */
-    init(withTheme: String, usingFont: HRFont? = nil) {
+    init(withTheme: String, usingFont: HRFont? = nil, debugCSS: Bool = false) {
+
+        self.debugCSS = debugCSS
         
         // Save the original theme CSS.
         self.theme = withTheme
