@@ -38,6 +38,9 @@ open class Theme {
     open var italicCodeFont: HRFont!
     open var themeBackgroundColour: HRColor!
 
+    // When `true`, dump the CSS we're using to help debug the way it's parsed, stored, and re-emitted.
+    open var debugCSS = false
+
     
     // MARK:- Private Properties
     private var themeDict : HRThemeDict!
@@ -50,13 +53,16 @@ open class Theme {
      The default initialiser.
      
      - Parameters:
-        - withTheme: The name of the Highlight.js theme to use. Default: `Default`.
+        - withTheme: The theme's CSS description.
         - usingFont: Optionally, a UIFont or NSFont to apply to the theme. Default: Courier @ 14pt.
     */
-    init(withTheme: String = "default", usingFont: HRFont? = nil) {
+    init(withTheme: String, usingFont: HRFont? = nil) {
         
-        // Record the theme name
+        // Save the original theme CSS.
         self.theme = withTheme
+        if debugCSS {
+            print("Highlighter.Theme.init() called with original theme CSS:\n== BEGIN ==\n" + withTheme + "\n== END ==\n")
+        }
         
         // Apply the font choice
         if let font: HRFont = usingFont {
@@ -211,16 +217,19 @@ open class Theme {
 
                 if attributes.count > 0 {
                     // Check if we're adding attributes to an existing hljs key
-                    if resultDict[objcString.substring(with: result.range(at: 1))] != nil {
+                    let key = objcString.substring(with: result.range(at: 1))
+                    if let existingAttributes = resultDict[key] {
                         // We have the key already so merge in the latest attribute dictionary
-                        let existingAttributes: [String: String] = resultDict[objcString.substring(with: result.range(at: 1))]!
-                        resultDict[objcString.substring(with: result.range(at: 1))] = existingAttributes.merging(attributes, uniquingKeysWith: { (first, _) in first })
+                        resultDict[key] = existingAttributes.merging(attributes, uniquingKeysWith: { (first, _) in first })
                     } else {
                         // Set the attributes to a new key
-                        resultDict[objcString.substring(with: result.range(at: 1))] = attributes
+                        resultDict[key] = attributes
                     }
                 }
             }
+        }
+        if debugCSS {
+            print("Theme.stripTheme() generated resultDict=\(resultDict)")
         }
 
         var returnDict = [String: [String: String]]()
@@ -239,6 +248,9 @@ open class Theme {
 
                 returnDict[key] = props!
             }
+        }
+        if debugCSS {
+            print("Theme.stripTheme() generated returnDict=\(returnDict)")
         }
 
         return returnDict
@@ -265,6 +277,10 @@ open class Theme {
             }
 
             resultString += "}"
+        }
+
+        if debugCSS {
+            print("Theme.strippedThemeToString() returning:\n== BEGIN ==\n\(resultString)\n== END ==\n")
         }
 
         return resultString

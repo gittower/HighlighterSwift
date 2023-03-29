@@ -23,6 +23,7 @@ open class Highlighter {
     // MARK:- Public Properties
     open var theme: Theme! {
         didSet {
+            theme.debugCSS = debugCSS
             themeChanged?(theme)
         }
     }
@@ -32,6 +33,13 @@ open class Highlighter {
 
     // When `true`, forces highlighting to finish even if illegal syntax is detected.
     open var ignoreIllegals = false
+
+    // When `true`, dump the CSS we're using to help debug the way it's parsed, stored, and re-emitted.
+    open var debugCSS = false {
+        didSet {
+            theme.debugCSS = debugCSS
+        }
+    }
 
     
     // MARK:- Private Properties
