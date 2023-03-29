@@ -145,7 +145,7 @@ open class Highlighter {
             returnAttrString = processHTMLString(renderedHTMLString)!
         } else {
             // Use NSAttributedString's own not-so-fast rendering
-            renderedHTMLString = "<style>" + self.theme.lightTheme + "</style><pre><code class=\"hljs\">" + renderedHTMLString + "</code></pre>"
+            renderedHTMLString = "<style>" + self.theme.theme + "</style><pre><code class=\"hljs\">" + renderedHTMLString + "</code></pre>"
             
             let data = renderedHTMLString.data(using: String.Encoding.utf8)!
             let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
