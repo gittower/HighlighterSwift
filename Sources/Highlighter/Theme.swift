@@ -164,6 +164,10 @@ open class Theme {
      - Returns: The styled text as an NSAttributedString.
     */
     internal func applyStyleToString(_ string: String, styleList: [String]) -> NSAttributedString {
+
+        if debugCSS {
+            print("Theme.applyStyleToString() \"\(string)\" with styleList=\(styleList)")
+        }
         
         let returnString: NSAttributedString
 
