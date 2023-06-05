@@ -175,10 +175,14 @@ open class Theme {
             // Build the attributes from the style list, including the font
             var attrs = [AttributedStringKey: Any]()
             attrs[.font] = self.codeFont
-            for style in styleList {
-                if let themeStyle = self.themeDict[style] as? [AttributedStringKey: Any] {
-                    for (attrName, attrValue) in themeStyle {
-                        attrs.updateValue(attrValue, forKey: attrName)
+            for classAttributeValue in styleList {
+                // Allow for a space-separated "class" attribute value such as "hljs-title class_", since highlight.js highlighters can produce such "class" lists.  Look up and apply each of the class' attributes, one after the other.
+                let classNames = classAttributeValue.components(separatedBy: .whitespaces)
+                for style in classNames {
+                    if let themeStyle = self.themeDict[style] as? [AttributedStringKey: Any] {
+                        for (attrName, attrValue) in themeStyle {
+                            attrs.updateValue(attrValue, forKey: attrName)
+                        }
                     }
                 }
             }

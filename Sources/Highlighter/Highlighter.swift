@@ -153,8 +153,9 @@ open class Highlighter {
                 .characterEncoding: String.Encoding.utf8.rawValue
             ]
 
-            // Execute on main thread
-            // NOTE Not sure why, when we don't do this elsewhere
+            // Perform HTML-to-NSAttributedString conversion on the main thread, since the NSAttributedString initializer we're using to do that work requires it per  https://developer.apple.com/documentation/foundation/nsattributedstring/1524613-init
+            //
+            // "The HTML importer should not be called from a background thread (that is, the options dictionary includes documentType with a value of html). It will try to synchronize with the main thread, fail, and time out. Calling it from the main thread works (but can still time out if the HTML contains references to external resources, which should be avoided at all costs)."
             safeMainSync
             {
                 returnAttrString = try? NSMutableAttributedString(data:data, options: options, documentAttributes:nil)
